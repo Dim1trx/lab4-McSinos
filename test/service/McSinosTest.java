@@ -51,8 +51,6 @@ public class McSinosTest {
 
         // Testa se produto foi adicionado ao pedido
         mcSinos.novoPedido(new Scanner("1\n2\n"), 1);
-
-        mcSinos.getPedido();
         assertEquals("Não há pedidos.\nInforme o ID do produto numero 1: Qual será a quantidade desse produto? Produtos adicionados ao pedido." + System.lineSeparator(), outContent.toString());
         mcSinos.getPedido();
 
