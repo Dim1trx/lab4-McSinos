@@ -2,6 +2,7 @@ package main.application;
 
 import main.util.Menu;
 
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -12,6 +13,7 @@ public class Main {
 
         while (opcao != 4) {
             Menu.imprimeOpcoes();
+
 
             try {
                 opcao = sc.nextInt();

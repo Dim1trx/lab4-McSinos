@@ -4,17 +4,18 @@ import main.model.Pedido;
 import main.model.Produto;
 import main.util.Catalogo;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Scanner;
+import java.security.InvalidParameterException;
+import java.sql.SQLOutput;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
+
 public class McSinos {
     private AtomicLong counter = new AtomicLong(0);
     private Catalogo catalogo = new Catalogo();
     private Queue<Pedido> pedidos = new LinkedList<>();
 
-    public McSinos() {}
+    public McSinos() {
+    }
 
     public Catalogo getCatalogo() {
         return catalogo;
@@ -23,25 +24,42 @@ public class McSinos {
     public Queue<Pedido> getPedidos() {
         return pedidos;
     }
+
     public void novoPedido(Scanner sc, int n) {
         Pedido pedido = new Pedido(counter.incrementAndGet());
         List<Produto> produtos = pedido.getProdutos();
 
         for (int i = 0; i < n; i++) {
-            System.out.print("Informe o ID do produto numero " + (i + 1) + ": ");
-            Long id = sc.nextLong();
+            try {
+                System.out.print("Informe o ID do produto numero " + (i + 1) + ": ");
+                Long id = sc.nextLong();
 
-            System.out.print("Qual será a quantidade desse produto? ");
-            int quantidade = sc.nextInt();
+                System.out.print("Qual será a quantidade desse produto? ");
+                int quantidade = sc.nextInt();
 
-            Produto produto = catalogo.getProduto(id, quantidade);
+                Produto produto = catalogo.getProduto(id, quantidade);
 
-            produtos.add(produto);
+                produtos.add(produto);
 
-            System.out.println("Produtos adicionado ao pedido.\n");
+                System.out.println("Produtos adicionados ao pedido.\n");
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida. Certifique-se de inserir um ID válido e uma quantidade válida.");
+                sc.nextLine();
+                i--;
+            } catch (NoSuchElementException e) {
+                System.out.println("Entrada insuficiente. Certifique-se de fornecer todas as informações necessárias.");
+                sc.nextLine();
+                i--;
+            } catch (InvalidParameterException e) {
+                System.out.println("Produto não encontrado. Certifique-se de inserir um ID válido.");
+                sc.nextLine();
+                i--;
+            }
+
         }
         pedidos.add(pedido);
         sc.nextLine();
+
     }
 
 
@@ -56,13 +74,20 @@ public class McSinos {
     }
 
     public void getPedido() {
-        if (!pedidos.isEmpty()) {
-            Pedido retirado =  pedidos.poll();
+        try {
+            if (!pedidos.isEmpty()) {
+                Pedido retirado = pedidos.poll();
 
-            System.out.print("Pedido retirado com sucesso: ");
-            imprimePedido(retirado);
+                System.out.print("Pedido retirado com sucesso:");
+                imprimePedido(retirado);
+            } else {
+                System.out.println("Não há pedidos.");
+            }
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Erro inesperado.");
         }
-        else throw new NullPointerException("Não há pedidos");
     }
 
     public void imprimePedido(Pedido pedido) {
