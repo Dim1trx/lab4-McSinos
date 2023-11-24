@@ -5,7 +5,6 @@ import main.model.Produto;
 import main.util.Catalogo;
 
 import java.security.InvalidParameterException;
-import java.sql.SQLOutput;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -73,20 +72,17 @@ public class McSinos {
         }
     }
 
-    public void getPedido() {
-        try {
-            if (!pedidos.isEmpty()) {
-                Pedido retirado = pedidos.poll();
+    public Pedido getPedido() {
+        if (!pedidos.isEmpty()) {
+            Pedido retirado = pedidos.poll();
+            System.out.print("Pedido retirado com sucesso:");
+            imprimePedido(retirado);
+            return retirado;
+        }
 
-                System.out.print("Pedido retirado com sucesso:");
-                imprimePedido(retirado);
-            } else {
-                System.out.println("Não há pedidos.");
-            }
-        } catch (NullPointerException e) {
-            System.out.println(e.getMessage());
-        } catch (Exception e) {
-            System.out.println("Erro inesperado.");
+        else {
+            System.out.println("Não há pedidos.");
+            return null;
         }
     }
 

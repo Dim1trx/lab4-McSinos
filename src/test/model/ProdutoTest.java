@@ -1,4 +1,4 @@
-package model;
+package test.model;
 
 import main.model.Produto;
 import org.junit.Test;

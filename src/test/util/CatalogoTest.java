@@ -1,15 +1,14 @@
-package util;
+package test.util;
+
 import main.model.Produto;
 import main.util.Catalogo;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.security.InvalidParameterException;
-import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 public class CatalogoTest {
 

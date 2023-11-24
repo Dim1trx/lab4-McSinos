@@ -1,9 +1,8 @@
-package service;
+package test.service;
 
 import main.model.Pedido;
 import main.model.Produto;
 import main.service.McSinos;
-import main.util.Catalogo;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,10 +10,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class McSinosTest {
 
@@ -47,15 +43,21 @@ public class McSinosTest {
     public void testGetPedido() {
         // Testa se não há pedidos
         mcSinos.getPedido();
+
         assertEquals("Não há pedidos."+ System.lineSeparator(), outContent.toString());
 
         // Testa se produto foi adicionado ao pedido
-        mcSinos.novoPedido(new Scanner("1\n2\n"), 1);
-        assertEquals("Não há pedidos.\nInforme o ID do produto numero 1: Qual será a quantidade desse produto? Produtos adicionados ao pedido." + System.lineSeparator(), outContent.toString());
-        mcSinos.getPedido();
+        Pedido mockPedido = new Pedido(1L);
+        mcSinos.getPedidos().add(mockPedido);
+
+        Pedido pedido = mcSinos.getPedido();
+
+        assertTrue(pedido.getTotal() == mockPedido.getTotal());
+        assertNotNull(pedido);
 
         // Testa se o pedido foi removido da fila
         assertTrue(mcSinos.getPedidos().isEmpty());
+
     }
 
     @Test
